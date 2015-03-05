@@ -2,44 +2,36 @@
 #include<complex.h>
 #include<stdlib.h>
 #include"Faddeeva.h"
+#include<time.h>
+#include<math.h>
+#include<omp.h>
 
 double complex FNF( double complex Z );
 
 int main(void)
 {
-	int N = 1000;
-	double domain = 20.0;
+	long n = 100000000;
+	unsigned seed = time(NULL) + 1337;
+	complex double ctr = 0;
 
-	double delta = domain/N;
-	double test = -10.0 + delta*213;
-	double complex tester = -10.0 + delta*213 + 0*I;
-	printf("abs(tester) = %lf\n", cabs(tester));
-	tester = Faddeeva_w(test, 0.0);
-	printf("MIT creal(test) = %e\n", creal(tester));
-	tester = FNF(test);
-	printf("FNF creal(test) = %e\n", creal(tester));
-	
-	FILE *freal = fopen("real.dat", "w");
-	FILE *fimag =  fopen("imag.dat", "w");
-
-	for( int i = 0; i < N/2; i++ )
+	double start = omp_get_wtime();
+	long hit = 0;
+	for( long i = 0; i < n; i++ )
 	{
-		double imag = domain * (double) i / N;
-		for( int j = 0; j < N; j++ )
-		{
-			double real = -domain/2.0 + domain * (double) j / N;
-			double complex z = real + imag * I;
-			double complex W = FNF(z); 
-			//double complex W = Faddeeva_w(z,0.0); 
-
-			fprintf(freal, "%e\t", creal(W));
-			fprintf(fimag, "%e\t", cimag(W));
-		}
-		fprintf(freal,"\n");
-		fprintf(fimag,"\n");
+		double real = 6.0+ rand_r(&seed) / RAND_MAX;
+		double imag = 6.0+rand_r(&seed) / RAND_MAX;
+		double complex A = real + imag*I;
+		if( cabs(A) <= 6.0 )
+			hit++;
+		complex double result = FNF(A);
+		//complex double result = Faddeeva_w(A,0.0);
+		ctr += result;
 	}
-	fclose(freal);
-	fclose(fimag);
+	double end = omp_get_wtime();
+	printf("TIME = %lf seconds\n", end-start);
+	printf("result: %.2lf + %.2lfi\n", creal(ctr), cimag(ctr));
+	printf("Percent Full Faddeeva Rate: %.4lf%%\n", (double) hit / n * 100.0);
+
 	return 0;
 }
 
