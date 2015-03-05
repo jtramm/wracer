@@ -18,8 +18,8 @@ int main(void)
 	long hit = 0;
 	for( long i = 0; i < n; i++ )
 	{
-		double real = 6.0+ rand_r(&seed) / RAND_MAX;
-		double imag = 6.0+rand_r(&seed) / RAND_MAX;
+		double real = 1.0* (double) rand_r(&seed) / RAND_MAX;
+		double imag = 1.0 *(double) rand_r(&seed) / RAND_MAX;
 		double complex A = real + imag*I;
 		if( cabs(A) <= 6.0 )
 			hit++;
@@ -29,6 +29,7 @@ int main(void)
 	}
 	double end = omp_get_wtime();
 	printf("TIME = %lf seconds\n", end-start);
+	printf("%lf us per evaluation\n", (end-start) / n *1e6);
 	printf("result: %.2lf + %.2lfi\n", creal(ctr), cimag(ctr));
 	printf("Percent Full Faddeeva Rate: %.4lf%%\n", (double) hit / n * 100.0);
 
