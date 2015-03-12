@@ -19,7 +19,7 @@ LDFLAGS = -lm
 ifeq ($(COMPILER),gnu)
   CC = gcc
   LDFLAGS += 
-  CFLAGS += -Ofast -ffast-math -fopenmp
+  CFLAGS += -Ofast -ffast-math -fopenmp -flto
 endif
 
 # intel Compiler
