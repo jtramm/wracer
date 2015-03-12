@@ -75,7 +75,7 @@ int main(void)
 	printf("TIME = %lf seconds\n", end-start);
 	printf("Time per Faddeeva: %.3lf (ns)\n", MIT_tpf);
 	printf("result: %.2lf + %.2lfi\n", creal(ctr), cimag(ctr));
-	printf("Percent Full Faddeeva Rate: %.4lf%%\n", (double) hit / (2*n) * 100.0);
+	printf("Percent Full Faddeeva Rate: %.4lf%%\n", (double) hit / (n) * 100.0);
 	printf("SUMMARY================================================\n");
 	printf("FNF: %.3lf (ns)\n", FNF_tpf);
 	printf("MIT: %.3lf (ns)\n", MIT_tpf);
